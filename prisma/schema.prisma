@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FINALIZED
+  FAILED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique @db.VarChar(32)
+  email        String   @unique @db.VarChar(254)
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  wallets      Wallet[]
+  transactions Transaction[]
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Wallet {
+  id                  String   @id @default(cuid())
+  ownerUserId         String
+  owner               User     @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  label               String   @default("Wallet") @db.VarChar(40)
+  publicAddress       String   @unique @db.VarChar(64)
+  // Envelope-encrypted secret key: AES-256-GCM(secret) with a per-wallet DEK, DEK wrapped by the master key.
+  encryptedPrivateKey String
+  // JSON: version, algorithm, iv, authTag, wrappedDek, dekIv, dekAuthTag, keyId
+  encryptionMetadata  Json
+  networkOrCluster    String   @default("devnet") @db.VarChar(16)
+  createdAt           DateTime @default(now())
+
+  transactions Transaction[]
+
+  @@index([ownerUserId, createdAt])
+}
+
+model Transaction {
+  id                 String            @id @default(cuid())
+  ownerUserId        String
+  owner              User              @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  sourceWalletId     String
+  sourceWallet       Wallet            @relation(fields: [sourceWalletId], references: [id], onDelete: Restrict)
+  // Null until the network accepted the transaction; the signature is derived locally before sending.
+  signature          String?           @unique @db.VarChar(100)
+  destinationAddress String            @db.VarChar(64)
+  amountLamports     BigInt
+  feeLamports        BigInt?
+  networkOrCluster   String            @default("devnet") @db.VarChar(16)
+  status             TransactionStatus @default(PENDING)
+  failureReason      String?           @db.VarChar(300)
+  idempotencyKey     String            @db.VarChar(100)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@unique([ownerUserId, idempotencyKey])
+  @@index([ownerUserId, createdAt])
+  @@index([sourceWalletId, createdAt])
+  @@index([status])
+}

@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build output
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+*.tsbuildinfo
+src/generated/
+
+# env files (never commit real credentials)
+.env
+.env.local
+.env.*.local
+
+# logs, coverage, temp
+*.log
+npm-debug.log*
+pnpm-debug.log*
+coverage/
+.vercel/
+.DS_Store
+tmp/
+*.tmp

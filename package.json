@@ -1,0 +1,78 @@
+{
+  "name": "arc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "arc — a Devnet Solana cloud wallet with the Electric Gaze ASCII background",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "postinstall": "prisma generate"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma",
+      "@prisma/client",
+      "esbuild",
+      "sharp",
+      "@node-rs/argon2",
+      "unrs-resolver"
+    ],
+    "overrides": {
+      "mysql2": ">=3.23.1"
+    }
+  },
+  "dependencies": {
+    "@node-rs/argon2": "2.2.2",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "@radix-ui/react-dialog": "1.3.1",
+    "@radix-ui/react-label": "2.1.17",
+    "@radix-ui/react-slot": "1.5.0",
+    "@solana-program/system": "0.15.0",
+    "@solana/kit": "8.5.0",
+    "@upstash/ratelimit": "2.2.0",
+    "@upstash/redis": "1.39.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "geist": "^1.7.2",
+    "lucide-react": "1.57.0",
+    "next": "16.4.0",
+    "pg": "8.23.1",
+    "qrcode": "1.5.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "tailwind-merge": "3.7.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "dotenv": "^18.0.8",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.0",
+    "prisma": "7.10.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.4"
+  }
+}
