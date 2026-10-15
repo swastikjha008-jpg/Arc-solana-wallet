@@ -1,178 +1,337 @@
-# arc
+<div align="center">
 
-A **Devnet Solana cloud wallet** with the **Electric Gaze** animated ASCII background.
-Sign up, get a wallet, see live SOL balances, receive via QR, and send SOL — signed server-side.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050810,50:0969DA,100:38BDF8&height=240&section=header&text=arc&fontSize=90&fontColor=FFFFFF&fontAlignY=38&desc=SOLANA%20CLOUD%20WALLET&descSize=18&descColor=93C5FD&descAlignY=60" alt="arc banner" width="100%"/>
 
-> ⚠️ **Not audited. Devnet only. Do not use real funds.**
-> arc is a *custodial* wallet: the server holds (encrypted) keys and can sign transactions.
-> Before supporting real funds you need a security review and production-grade key custody (KMS/HSM). See [Production key management](#production-key-management).
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=3200&pause=900&color=38BDF8&center=true&vCenter=true&width=640&lines=Create+a+Solana+wallet+in+seconds;Check+live+SOL+balances;Send+SOL+on+Devnet;Blue+by+design.+Built+for+Devnet." alt="Typing animation" />
+</a>
 
-## Stack
+<br/>
 
-Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS 4 · Radix/shadcn-style UI · Zod 4 ·
-Prisma 7 + PostgreSQL · `@solana/kit` · Argon2id (`@node-rs/argon2`) · Vitest · pnpm
+A modern, dark-themed **custodial cloud wallet** for creating wallets, checking live SOL balances, and sending transactions on **Solana Devnet**, wrapped in a minimal interface with an electric-blue identity and a distinctive ASCII-art background.
 
-## Prerequisites
+<br/>
 
-- **Node.js 20.18+** (22 recommended — see `.nvmrc`)
-- **pnpm 10** (`corepack enable` or `npm i -g pnpm`)
-- A **PostgreSQL** database (local, Neon, Supabase, Railway, Vercel Postgres, …)
-- A **Solana Devnet RPC URL** (the public `https://api.devnet.solana.com` works but is rate-limited; Helius/QuickNode/Alchemy free tiers are better)
+![Solana](https://img.shields.io/badge/Solana-Devnet-0B1220?style=for-the-badge&logo=solana&logoColor=38BDF8&labelColor=050810&color=0969DA)
+![Next.js](https://img.shields.io/badge/Next.js-16-0B1220?style=for-the-badge&logo=nextdotjs&logoColor=38BDF8&labelColor=050810&color=0969DA)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-0B1220?style=for-the-badge&logo=typescript&logoColor=38BDF8&labelColor=050810&color=0969DA)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-0B1220?style=for-the-badge&logo=postgresql&logoColor=38BDF8&labelColor=050810&color=0969DA)
 
-## Quick start
+<br/>
+
+**[Features](#-features)** &nbsp;·&nbsp; **[Use Cases](#-what-can-you-use-arc-for)** &nbsp;·&nbsp; **[Tech Stack](#-tech-stack)** &nbsp;·&nbsp; **[How It Works](#%EF%B8%8F-how-it-works)** &nbsp;·&nbsp; **[Getting Started](#-getting-started)** &nbsp;·&nbsp; **[Security](#-security)**
+
+</div>
+
+<br/>
+
+> [!WARNING]
+> **Devnet only.** Arc is an experimental, unaudited, custodial wallet intended for development and testing. Never use it to store real SOL, mainnet assets, or valuable funds.
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## ✦ About Arc
+
+**Arc** is a Solana cloud wallet project built to explore the fundamentals of blockchain wallets through a clean, accessible web interface.
+
+Instead of requiring a browser wallet extension, Arc offers a browser-based experience for creating and accessing a custodial wallet, checking balances, and sending SOL on Devnet. It combines modern web development with Solana integration, database persistence, and server-side wallet functionality.
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## ⚡ Features
+
+| | Feature | Description |
+|:-:|---|---|
+| 🔑 | **Create Wallet** | Start a custodial wallet flow directly from the browser. |
+| 🚪 | **Sign In** | Access your wallet through the application's sign-in flow. |
+| 💎 | **SOL Balance** | Check live balances via the configured Solana RPC endpoint. |
+| 📤 | **Send SOL** | Test SOL transfers on Solana Devnet. |
+| ☁️ | **Cloud Database** | Persist application data with PostgreSQL and Prisma. |
+| 🛡️ | **Wallet Encryption** | Protect wallet data with a dedicated encryption key. |
+| 🧪 | **Devnet Integration** | Experiment with test SOL instead of real funds. |
+| 🌌 | **Electric Gaze Background** | A distinctive ASCII-art visual effect on the landing page. |
+| 🎨 | **Modern Interface** | Dark surfaces, electric-blue accents, minimal wallet UX. |
+
+<sub>Availability of individual flows depends on the current implementation and configuration.</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🎯 What Can You Use Arc For?
+
+Arc is a learning and experimentation project. Here are practical ways to use it:
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>01 · Learn Solana Development</h3>
+      See how a web app talks to Solana, requests account balances, and submits transactions through an RPC endpoint.
+    </td>
+    <td width="50%" valign="top">
+      <h3>02 · Explore Wallet Architecture</h3>
+      Understand custodial wallets, wallet creation, encrypted key handling, and how a frontend relates to a backend.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>03 · Practice Web3 Full-Stack</h3>
+      Use Arc as a reference for combining React, TypeScript, PostgreSQL, and blockchain functionality.
+    </td>
+    <td width="50%" valign="top">
+      <h3>04 · Test Transactions Safely</h3>
+      Experiment with Devnet SOL, inspect transaction signatures, and verify activity on a blockchain explorer.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>05 · Build Your Own Wallet</h3>
+      Fork the repo and extend it with transaction history, address management, token balances, or richer dashboards.
+    </td>
+    <td width="50%" valign="top">
+      <h3>06 · Demos & Hackathons</h3>
+      Run it locally, showcase your Web3 skills, or adapt it for a learning exercise or hackathon prototype.
+    </td>
+  </tr>
+</table>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🧰 Tech Stack
+
+<div align="center">
+
+| Layer | Technologies |
+|:-:|:-:|
+| **Frontend** | ![Next.js](https://img.shields.io/badge/Next.js-0B1220?style=for-the-badge&logo=nextdotjs&logoColor=white&labelColor=0B1220&color=0969DA) ![React](https://img.shields.io/badge/React-0B1220?style=for-the-badge&logo=react&logoColor=38BDF8&labelColor=0B1220&color=0969DA) ![TypeScript](https://img.shields.io/badge/TypeScript-0B1220?style=for-the-badge&logo=typescript&logoColor=white&labelColor=0B1220&color=0969DA) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-0B1220?style=for-the-badge&logo=tailwindcss&logoColor=38BDF8&labelColor=0B1220&color=0969DA) |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-0B1220?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=0B1220&color=0969DA) ![Prisma](https://img.shields.io/badge/Prisma-0B1220?style=for-the-badge&logo=prisma&logoColor=white&labelColor=0B1220&color=0969DA) ![Neon](https://img.shields.io/badge/Neon-0B1220?style=for-the-badge&logo=neon&logoColor=38BDF8&labelColor=0B1220&color=0969DA) |
+| **Blockchain** | ![Solana](https://img.shields.io/badge/Solana_Devnet-0B1220?style=for-the-badge&logo=solana&logoColor=38BDF8&labelColor=0B1220&color=0969DA) ![Web3](https://img.shields.io/badge/Web3-0B1220?style=for-the-badge&logoColor=white&labelColor=0B1220&color=0969DA) |
+| **Tooling** | ![pnpm](https://img.shields.io/badge/pnpm-0B1220?style=for-the-badge&logo=pnpm&logoColor=white&labelColor=0B1220&color=0969DA) ![ESLint](https://img.shields.io/badge/ESLint-0B1220?style=for-the-badge&logo=eslint&logoColor=38BDF8&labelColor=0B1220&color=0969DA) ![Docker](https://img.shields.io/badge/Docker-0B1220?style=for-the-badge&logo=docker&logoColor=38BDF8&labelColor=0B1220&color=0969DA) |
+
+</div>
+
+**Runtime:** Node.js 20.18+ &nbsp;·&nbsp; **Package manager:** pnpm
+
+<sub>Refer to `package.json` for exact versions. Docker is optional and not required for the local setup below.</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🏗️ How It Works
+
+```text
+┌────────────────────────────────────┐
+│            Arc Frontend            │
+│   Next.js + React + TypeScript     │
+└─────────────────┬──────────────────┘
+                  │
+                  ▼
+┌────────────────────────────────────┐
+│        Application Backend         │
+│    Wallet logic and data access    │
+└────────┬──────────────────┬────────┘
+         │                  │
+         ▼                  ▼
+┌─────────────────┐  ┌─────────────────┐
+│   PostgreSQL    │  │  Solana Devnet  │
+│   via Prisma    │  │     RPC API     │
+└─────────────────┘  └─────────────────┘
+```
+
+| Component | Role |
+|---|---|
+| **Frontend** | Displays the wallet experience and accepts user interactions. |
+| **Backend** | Handles application operations and wallet-related logic. |
+| **PostgreSQL** | Stores application data according to the Prisma schema. |
+| **Solana RPC** | Provides blockchain data and transaction submission. |
+| **Wallet encryption** | Uses a dedicated environment variable for the configured encryption mechanism. |
+
+<sub>This diagram is conceptual and does not represent every request or internal module.</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 20.18 or newer
+- [pnpm](https://pnpm.io/installation)
+- A PostgreSQL database, such as [Neon](https://neon.tech/)
+- A Solana Devnet RPC endpoint
+- Git and a code editor such as VS Code
+
+### 1 · Clone the repository
+
+Replace the URL with your actual GitHub repository URL.
 
 ```bash
-pnpm install                 # also runs `prisma generate`
-cp .env.example .env.local   # then fill in the values (see below)
-pnpm db:deploy               # apply migrations to your database
-pnpm dev                     # http://localhost:3000
+git clone https://github.com/YOUR_USERNAME/arc-solana-wallet.git
+cd arc-solana-wallet
 ```
 
-### Environment variables
-
-`.env.example` contains **placeholders only**. Never commit real values; `.env`, `.env.local` and `.env.*.local` are git-ignored.
-
-| Variable | Purpose |
-| --- | --- |
-| `APP_URL` | Public origin of the app (used for CSRF/Origin checks). `http://localhost:3000` locally. |
-| `AUTH_SECRET` | ≥ 32 chars. HMAC key for session-token hashes. |
-| `DATABASE_URL` | PostgreSQL connection string. |
-| `SOLANA_CLUSTER` | `devnet` (default). Mainnet is **refused** unless you also set `ALLOW_MAINNET=true` — don't. |
-| `SOLANA_RPC_URL` | Devnet RPC endpoint. May contain an API key; it is server-only and never logged or sent to the browser. |
-| `WALLET_ENCRYPTION_KEY` | 32 random bytes as 64 hex chars. **Development-only** master key (see below). |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | Optional. Shared rate limiting for multi-instance deployments. Set both or neither. |
-
-The app validates all variables on first server use (`src/lib/env.ts`) and fails with a clear message naming the offending variable (never its value).
-
-### Generate secrets locally
+### 2 · Install dependencies
 
 ```bash
-openssl rand -base64 48   # AUTH_SECRET
-openssl rand -hex 32      # WALLET_ENCRYPTION_KEY
+pnpm install
 ```
 
-If you lose `WALLET_ENCRYPTION_KEY`, existing wallets can no longer sign. Back it up (Devnet wallets are disposable, but treat the habit seriously).
+### 3 · Create your environment files
 
-## Electric Gaze source image
+Copy the example file to `.env.local` for the application.
 
-The background is a faithful Canvas 2D re-implementation of the Electric Gaze effect with the exact configuration from the build prompt
-(`src/components/ascii/config.ts` → `ELECTRIC_GAZE_CONFIG`, rendered by `engine.ts`; one fixed canvas mounted once in the root layout).
+**Windows PowerShell**
 
-**The original source image was not accessible when this project was generated**, and inventing a substitute was explicitly ruled out.
-So the canvas is transparent until you add the original image:
-
-```
-public/images/electric-gaze-source.webp
+```powershell
+Copy-Item .env.example .env.local
 ```
 
-Reference: <https://21st.dev/community/ascii> (source path `/ascii-editor/demos/generated/ref-002.webp`). No code change is needed — reload and the effect appears.
-Until then the app is fully usable on a plain dark background (the browser console logs one warning).
-
-Behaviour: `requestAnimationFrame` loop capped at ~30 fps and paused when the tab is hidden · `ResizeObserver` + capped device-pixel-ratio ·
-`prefers-reduced-motion` renders a single static frame · pointer events disabled on the canvas · loop cancelled on unmount.
-
-## Database
+**macOS / Linux**
 
 ```bash
-pnpm db:deploy      # prisma migrate deploy — applies committed migrations (safe for production)
-pnpm db:migrate     # prisma migrate dev — create/apply new migrations in development
-pnpm db:validate    # validate the schema
+cp .env.example .env.local
 ```
 
-Models: `User`, `Session`, `Wallet`, `Transaction` (see `prisma/schema.prisma`). Private keys are stored only as AES-256-GCM ciphertext
-plus metadata; sessions store only an HMAC of the token. **Never run `prisma migrate reset` or `db push --force-reset` against a production database.**
+The database migration command also reads variables from `.env`. After filling in `.env.local`, create a matching `.env`:
 
-Provisioning tip (Neon/Supabase/etc.): create a database, copy its connection string into `DATABASE_URL`, then run `pnpm db:deploy`.
+```powershell
+Copy-Item .env.local .env
+```
 
-## Solana Devnet
+> [!NOTE]
+> If `.env` already exists, update it with the correct values instead of overwriting other settings.
 
-New wallets start at 0 SOL. Copy your address from the dashboard and request test SOL at <https://faucet.solana.com> (choose **Devnet**).
+### 4 · Configure environment variables
 
-Transfers: amounts are parsed to integer lamports (no floats), checked against balance + fee (5000 lamports), against the rent-exempt minimum, and
-sent only after an explicit confirm step. Each send carries an idempotency key, so retries never double-spend. A transaction shows **Pending** until
-the RPC reports `confirmed`/`finalized`; failed or expired transactions are marked **Failed** — success is never assumed from "request sent".
+Set these values in `.env.local`, and make sure the same values are available in `.env` for Prisma.
 
-## Testing and building
+```dotenv
+NODE_ENV=development
+APP_URL=http://localhost:3000
+
+AUTH_SECRET=replace_with_a_generated_secret
+
+DATABASE_URL="your_postgresql_connection_string"
+
+SOLANA_CLUSTER=devnet
+SOLANA_RPC_URL=https://api.devnet.solana.com
+
+WALLET_ENCRYPTION_KEY=replace_with_64_hex_characters
+
+# Optional: Upstash Redis REST credentials
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
+
+**Generate `AUTH_SECRET`**
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test        # Vitest, RPC mocked — no network or database needed
-pnpm build       # prisma generate && next build
+node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
 ```
 
-Test coverage: signup validation, Argon2id hashing, login/session/logout behaviour, unauthorized API access, cross-user wallet isolation,
-envelope encryption (tamper/wrong-key/context binding), wallet creation, address validation, lamport conversion, amount validation, RPC-failure handling,
-transaction status handling, real keypair generation + transaction signing (RPC faked), CSRF/origin checks, rate limiting, env validation,
-and the ASCII renderer (config defaults, lifecycle cleanup, resize, reduced motion).
+**Generate `WALLET_ENCRYPTION_KEY`**
 
-## Deployment (Vercel or any Node.js host)
-
-1. Provision managed PostgreSQL and a Devnet RPC.
-2. Import the repo into Vercel (framework: Next.js; `vercel.json` sets `pnpm install --frozen-lockfile` and `pnpm build`).
-3. Add **Production** environment variables (Project → Settings → Environment Variables): `APP_URL` (your https URL), `AUTH_SECRET`, `DATABASE_URL`,
-   `SOLANA_CLUSTER=devnet`, `SOLANA_RPC_URL`, `WALLET_ENCRYPTION_KEY`, and — for multiple instances — `UPSTASH_REDIS_REST_URL`/`_TOKEN`.
-   Use **fresh** secrets, not your local ones. Don't prefix any of these with `NEXT_PUBLIC_`.
-4. Apply migrations once from a trusted machine: `DATABASE_URL=<prod url> pnpm db:deploy` (or run it in CI before deploy).
-5. Deploy. Check `GET /api/health` → `{"ok":true,...}`.
-
-Other Node hosts: `pnpm install --frozen-lockfile && pnpm build && pnpm start` behind HTTPS. Session cookies are `Secure` when `NODE_ENV=production`.
-No durable state is kept on the local filesystem or in memory except the (optional-to-replace) single-instance rate-limit fallback — set Upstash for multi-instance.
-
-## Logs and troubleshooting
-
-- **Vercel:** Project → Logs, or `vercel logs <deployment-url>`. **Self-hosted:** stdout/stderr of `pnpm start`.
-- The app logs only error *names* — never request bodies, keys, tokens, or the RPC URL.
-- `Invalid environment configuration: …` → a variable is missing, malformed, or still a `REPLACE_WITH_…` placeholder.
-- Balance shows "Could not fetch…" / API `rpc_error` (502) → check `SOLANA_RPC_URL`, rate limits, or try another provider.
-- `Cross-site request rejected` (403) → `APP_URL` doesn't match the origin you're browsing (scheme, host, port must match exactly).
-- `prisma generate` fails offline → it downloads engine binaries from `binaries.prisma.sh`; run it on a machine with network access.
-- Blank background → add the source image (see above).
-
-## Security model
-
-- **Passwords:** Argon2id (19 MiB, t=2, p=1); login does a dummy hash for unknown users and returns one generic error.
-- **Sessions:** random 256-bit token in an `HttpOnly`, `SameSite=Lax`, `Secure` (prod) cookie; only an HMAC of it is stored; 7-day expiry; sign-out deletes it server-side.
-- **CSRF:** SameSite cookie + required matching `Origin`/`Referer` + JSON-only bodies on every mutation.
-- **Authorization:** every wallet/transaction query is scoped by the authenticated user's id in the data layer; others get an identical 404.
-- **Rate limiting:** sign-up, sign-in (per IP and per account), wallet creation, and transaction submission.
-- **Keys:** generated server-side, envelope-encrypted (per-wallet AES-256-GCM data key, wrapped by a master key, wallet address bound as AAD), never sent to the client, never logged, decrypted only to sign, and zeroed afterwards.
-- **Headers:** `nosniff`, `X-Frame-Options: DENY`, strict referrer policy.
-
-### Production key management
-
-`WALLET_ENCRYPTION_KEY` in an environment variable is a **development-only** master key: anyone who can read your environment and database can steal every wallet.
-The `KeyWrapper` interface in `src/lib/crypto/wallet-crypto.ts` is the seam for a KMS/HSM (AWS KMS, GCP KMS, HashiCorp Vault): implement `wrap`/`unwrap` for the 32-byte
-data key and change `getKeyWrapper()` in `src/lib/solana/wallet.ts`. For real funds, additionally obtain an independent security review and consider specialist custody or a non-custodial design.
-**This Devnet starter has not undergone a security audit and must not be described as safe for real funds.** Mainnet is disabled by default and requires deliberate configuration.
-
-## API
-
-All responses: `{ "ok": true, "data": … }` or `{ "ok": false, "error": { "code", "message", "details?" } }`. Lamports are strings.
-
-| Method & path | Auth | Description |
-| --- | --- | --- |
-| `POST /api/v1/signup` · `signin` · `signout` | – / – / ✓ | Account + session |
-| `GET /api/v1/me` | ✓ | Current user |
-| `GET/POST /api/v1/wallets` | ✓ | List / create wallet |
-| `GET /api/v1/wallets/[id]` | ✓ | One wallet (public data only) |
-| `GET /api/v1/wallets/[id]/balance` | ✓ | Live balance via RPC |
-| `GET/POST /api/v1/transactions` | ✓ | History / send SOL (`confirmed: true` + `idempotencyKey` required) |
-| `GET /api/v1/transactions/[signature]` | ✓ | Details; refreshes pending status from RPC |
-| `GET /api/health` | – | Liveness (reveals no configuration) |
-
-## Project layout
-
-```
-src/app/                 pages + route handlers (api/v1/*, api/health)
-src/components/ascii/    Electric Gaze: config.ts · helpers.ts · engine.ts · AsciiBackground.tsx
-src/components/{auth,wallet,transactions,brand,ui}/
-src/lib/{auth,crypto,db,solana}/ · env.ts · api.ts · rate-limit.ts · validation*.ts
-src/server/{services,repositories}/   business logic / data access (server-only)
-prisma/                  schema + migrations
-tests/                   Vitest suites
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-## License
+This produces a 32-byte key as 64 hexadecimal characters.
 
-MIT — see `LICENSE`.
+> [!CAUTION]
+> Use the same encryption key consistently. Changing it may make previously encrypted wallet data inaccessible. Never commit real secrets or connection strings.
+
+### 5 · Configure PostgreSQL
+
+Create a database through Neon or use an existing PostgreSQL instance, then paste the connection string into `DATABASE_URL` in both `.env` and `.env.local`. Verify that the database and branch exist, the credentials are correct, and the connection works with Prisma.
+
+### 6 · Apply database migrations
+
+```bash
+pnpm db:deploy
+```
+
+A successful run reports that all migrations have been applied.
+
+### 7 · Start the development server
+
+```bash
+pnpm dev
+```
+
+Open **http://localhost:3000**. If the port is taken, Next.js may use another one (such as `3001`), so use the URL printed in your terminal.
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🌌 Electric Gaze Background
+
+Arc renders an ASCII-art effect as its landing page background. Place the source image at:
+
+```text
+public/
+└── images/
+    └── electric-gaze-source.webp
+```
+
+- The filename must match **exactly**.
+- The image must genuinely be encoded as **WebP**. Renaming another format's extension is not enough.
+- If the background stays blank, confirm the file exists at this path, make sure you're using the original source image, and refresh the app.
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🧪 Development Commands
+
+Run these from the repository root.
+
+| Command | Purpose |
+|---|---|
+| `pnpm dev` | Start the development server |
+| `pnpm db:deploy` | Apply database migrations |
+| `pnpm test` | Run the project's tests |
+| `pnpm lint` | Check code quality and lint rules |
+| `pnpm typecheck` | Run TypeScript checks |
+| `pnpm build` | Build the application for production |
+
+<sub>Optional checks depend on the scripts defined in `package.json`.</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🔐 Security
+
+Wallet software demands care. Arc is a learning and testing project, and the app itself identifies as a custodial, unaudited Devnet starter.
+
+- 🧪 **Use Devnet only.** No real funds or mainnet assets.
+- 🙈 **Never commit secrets.** Make sure `.env`, `.env.local`, and any credential files are in `.gitignore`.
+- 🔑 **Protect the encryption key.** Back it up securely and don't rotate it without a plan for existing encrypted data.
+- 🗄️ **Protect your database.** Keep PostgreSQL credentials private and use scoped access.
+- 🔍 **A working demo is not an audit.** Authentication, sessions, wallet creation, encryption, and transaction authorization need review before any production use.
+- ♻️ **Rotate exposed credentials.** If secrets are ever published by accident, replace them immediately.
+
+Arc should not be considered production-ready just because the app starts or a Devnet transaction succeeds.
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:050810,50:0969DA,100:38BDF8&height=2" width="100%"/>
+
+## 🤝 Contributing
+
+Contributions, suggestions, bug reports, and ideas are welcome.
+
+1. **Fork** the repository
+2. **Create** a feature branch
+3. **Make and test** your changes
+4. **Commit** with a clear message
+5. **Open** a pull request describing the change
+
+Please don't include secrets, credentials, private keys, or real user data in issues or pull requests.
+
+## 📄 License
+
+See the repository's `LICENSE` file for the applicable license and terms.
+
+<br/>
+
+<div align="center">
+
+### Built to explore the Solana ecosystem.
+
+[![Explore Solana Devnet](https://img.shields.io/badge/Explore-Solana_Devnet-0B1220?style=for-the-badge&logo=solana&logoColor=38BDF8&labelColor=050810&color=0969DA)](https://explorer.solana.com/?cluster=devnet)
+
+<sub>**arc** · Blue by design. Built for Devnet.<br/>An experimental Web3 project for learning, testing, and building.</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:38BDF8,50:0969DA,100:050810&height=120&section=footer" alt="footer" width="100%"/>
+
+</div>
